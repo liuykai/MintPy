@@ -106,7 +106,16 @@ def ref_date_file(ts_file, ref_date, outfile=None):
     print('-'*50)
     print('change reference date for file: {}'.format(ts_file))
     atr = readfile.read_attribute(ts_file)
-    if ref_date == atr['REF_DATE']:
+
+    if 'REF_DATE' not in atr:
+        dostep = 0
+    else:
+        if ref_date == atr['REF_DATE']:
+            dostep = 1
+        else:
+            dostep = 0
+
+    if dostep == 1:
         print('same reference date chosen as existing reference date.')
         if not outfile:
             print('Nothing to be done.')
@@ -115,7 +124,7 @@ def ref_date_file(ts_file, ref_date, outfile=None):
             print('Copy {} to {}'.format(ts_file, outfile))
             shutil.copy2(ts_file, outfile)
             return outfile
-    else:
+    elif dostep == 0:
         obj = timeseries(ts_file)
         obj.open(print_msg=False)
         ref_idx = obj.dateList.index(ref_date)

@@ -29,8 +29,14 @@ def get_center_lat_lon(geom_file, box=None):
     col_c = int((box[0] + box[2]) / 2)
     row_c = int((box[1] + box[3]) / 2)
     box_c = (col_c, row_c, col_c+1, row_c+1)
-    lat_c = float(readfile.read(geom_file, datasetName='latitude', box=box_c)[0])
-    lon_c = float(readfile.read(geom_file, datasetName='longitude', box=box_c)[0])
+
+    # get center lat lon from geometryRadar.h5
+    #lat_c = float(readfile.read(geom_file, datasetName='latitude', box=box_c)[0])
+    #lon_c = float(readfile.read(geom_file, datasetName='longitude', box=box_c)[0])
+
+    # get cetner lat lon from geometryGeo.h5 
+    lat_c = float(meta['Y_FIRST']) + float(meta['LENGTH']/2) * float(meta['Y_STEP'])
+    lon_c = float(meta['X_FIRST']) + float(meta['WIDTH']/2)  * float(meta['X_STEP'])
     return lat_c, lon_c
 
 
