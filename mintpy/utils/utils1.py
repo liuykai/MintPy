@@ -778,7 +778,11 @@ def run_deramp(fname, ramp_type, mask_file=None, out_file=None, datasetName=None
 
     # Single Dataset File
     else:
-        data = readfile.read(fname)[0]
+        if datasetName is not None:
+            print(datasetName)
+            data = readfile.read(fname, datasetName=datasetName)[0]
+        elif datasetName is None:
+            data = readfile.read(fname)[0]
         data = deramp(data, mask, ramp_type, metadata=atr)[0]
         print('writing >>> {}'.format(out_file))
         writefile.write(data, out_file=out_file, ref_file=fname)
